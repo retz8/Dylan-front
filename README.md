@@ -6,3 +6,17 @@
 - UI Library: NextUI
 - HTTP Client: Axios (^1.6.8)
 - Styling: tailwindcss (^3.0.0)
+
+## Getting Started
+
+1. install necessary packages
+
+```bash
+npm install
+```
+
+2. start the development server
+
+```bash
+npm run dev
+```
