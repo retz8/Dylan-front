@@ -1,7 +1,7 @@
-import { Inter } from "next/font/google";
+import NextUIContext from "@/contexts/NextUIContext";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import Header from "@/components/Header/Header";
+import { globalFont } from "@/utils/fonts/globalFont";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,12 +10,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {/* header */}
-
+    <html className={`${globalFont.className}`} lang="en">
+      <body className="flex flex-col overflow-x-hidden relative ">
         {/* page.js */}
-        <main>{children}</main>
+        <main className="grow dark bg-background text-foreground">
+          <NextUIContext>{children}</NextUIContext>
+        </main>
 
         {/* footer */}
       </body>
