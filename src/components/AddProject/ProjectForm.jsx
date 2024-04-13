@@ -6,6 +6,7 @@ import { EyeSlashFilledIcon } from "../ui/icons/EyeSlashFilledIcon";
 import React, { useEffect, useState } from "react";
 import { addProject } from "@/services/project";
 import { motion } from "framer-motion";
+import TagInputs from "./TagInputs";
 
 export default function ProjectForm({
   isLoading,
@@ -16,6 +17,7 @@ export default function ProjectForm({
   const [projectName, setProjectName] = useState("");
   const [repoName, setRepoName] = useState("");
   const [accessCode, setAccessCode] = useState("");
+  const [tags, setTags] = useState([]);
 
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -40,7 +42,7 @@ export default function ProjectForm({
     setTimeout(() => {
       setIsSuccess(true);
       console.log("done");
-    }, 10000);
+    }, 5000);
 
     // const data = {
     //   repoName: repoName,
@@ -52,7 +54,7 @@ export default function ProjectForm({
   };
   return (
     <form
-      className="flex justify-center w-full h-96 flex-wrap md:flex-nowrap gap-4"
+      className="flex justify-center w-full flex-wrap md:flex-nowrap gap-4"
       onSubmit={handleFormSubmit}
     >
       <Input
@@ -93,6 +95,7 @@ export default function ProjectForm({
         type={isCodeVisible ? "text" : "password"}
         className="w-full"
       />
+      <TagInputs />
 
       <Button
         color="primary"

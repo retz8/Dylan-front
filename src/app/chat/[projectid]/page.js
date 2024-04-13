@@ -1,7 +1,12 @@
+import ChatLayout from "@/layouts/ChatLayout";
 import React from "react";
 
 export default function ChatPage({ params }) {
   const { projectid } = params;
 
-  return <div>Project chat</div>;
+  return (
+    <ChatLayout>
+      <div>wow</div>
+    </ChatLayout>
+  );
 }
