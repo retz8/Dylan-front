@@ -21,6 +21,7 @@ export default function ProjectForm({
 
   // user selected tags
   const [techTags, setTechTags] = useState([]);
+  const [disabledKeys, setDisabledKeys] = useState([]);
 
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -105,9 +106,18 @@ export default function ProjectForm({
         type={isCodeVisible ? "text" : "password"}
         className="w-full"
       />
-      <TagInputs techTags={techTags} setTechTags={setTechTags} />
+      <TagInputs
+        techTags={techTags}
+        setTechTags={setTechTags}
+        disabledKeys={disabledKeys}
+        setDisabledKeys={setDisabledKeys}
+      />
 
-      <TagDisplay techTags={techTags} />
+      <TagDisplay
+        techTags={techTags}
+        setTechTags={setTechTags}
+        setDisabledKeys={setDisabledKeys}
+      />
 
       <Button
         color="primary"

@@ -7,10 +7,14 @@ import {
 } from "@nextui-org/react";
 import { tags, techStackMap } from "./tags";
 
-export default function TagInputs({ techTags, setTechTags }) {
+export default function TagInputs({
+  techTags,
+  setTechTags,
+  disabledKeys,
+  setDisabledKeys,
+}) {
   const [value, setValue] = useState("");
   const [selectedKey, setSelectedKey] = useState(null);
-  const [disabledKeys, setDisabledKeys] = useState([]);
 
   const onSelectionChange = (id) => {
     console.log("id: ", id);
@@ -28,7 +32,7 @@ export default function TagInputs({ techTags, setTechTags }) {
     setDisabledKeys([...disabledKeys, value]);
     setTechTags([
       ...techTags,
-      { label: selectedKey, type: techStackMap.get(selectedKey) },
+      { label: selectedKey, type: techStackMap.get(selectedKey), value: value },
     ]);
 
     // clear the input
