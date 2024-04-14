@@ -17,7 +17,7 @@ export default function ChatPage({ params }) {
 
   const [query, setQuery] = useState("");
   const [isChatting, setIsChatting] = useState(false);
-
+  const [isLoadingChatHistories, setIsLoadingChatHistories] = useState(true);
   // chat histories : this will be rendered directly to the chat box
   const [chatHistories, setChatHistories] = useState([
     { query: "", response: "" },
@@ -30,6 +30,7 @@ export default function ChatPage({ params }) {
   useEffect(() => {
     // fetch chat histories
     const fetchChatHistories = async () => {
+      setIsLoadingChatHistories(true);
       const res = await loadChatHistory(userid, projectid);
       if (!res) return;
       console.log(res?.user_chat_history);
@@ -45,7 +46,7 @@ export default function ChatPage({ params }) {
 
       setChatHistories(loadedChatHistories);
 
-      // set current project
+      setIsLoadingChatHistories(false);
     };
     fetchChatHistories();
   }, [userid, projectid, params]);
@@ -70,6 +71,7 @@ export default function ChatPage({ params }) {
             isChatting={isChatting}
             projectName={currentProject?.projectName}
             isAiLoading={isAiLoading}
+            isLoadingChatHistories={isLoadingChatHistories}
           />
         </div>
 

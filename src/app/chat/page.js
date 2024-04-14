@@ -31,8 +31,8 @@ export default function ChatLandingPage() {
         <Button
           variant="ghost"
           onClick={() => {
-            signOut({ callbackUrl: "http://localhost:3000/sign-in" });
-            window.location.href = "http://localhost:3000/sign-in";
+            signOut({ callbackUrl: "http://localhost:3000/" });
+            window.location.href = "http://localhost:3000/";
           }}
         >
           Sign Out

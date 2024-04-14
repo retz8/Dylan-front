@@ -5,6 +5,7 @@ import styles from "./chat.module.css";
 import AiResponse from "./AiResponse";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
+import { Divider } from "@nextui-org/react";
 
 // when isAiLoading = true, we will show the loading spinner on the last response
 
@@ -14,6 +15,7 @@ export default function ChatBox({
   isChatting,
   projectName,
   isAiLoading,
+  isLoadingChatHistories,
 }) {
   const { data: session } = useSession();
 
@@ -40,6 +42,10 @@ export default function ChatBox({
       text: `${projectName}?`,
     },
   ];
+
+  if (isLoadingChatHistories) {
+    return null;
+  }
 
   if (!isChatting) {
     return (
@@ -70,6 +76,9 @@ export default function ChatBox({
               isLastResponse={index === chatHistories.length - 2}
               response={response}
             />
+            {chatHistories.length > 1 && index < chatHistories.length - 2 && (
+              <Divider style={{ marginTop: "24px" }} />
+            )}
           </div>
         ))}
       </motion.div>
