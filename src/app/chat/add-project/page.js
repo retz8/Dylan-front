@@ -9,6 +9,7 @@ import ProjectLoading from "@/components/AddProject/ProjectLoading";
 import ProjectUploadSuccess from "@/components/AddProject/ProjectUploadSuccess";
 import { Button, Spinner } from "@nextui-org/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 // form
 // Project Name: string
@@ -16,8 +17,11 @@ import Link from "next/link";
 // GitHub access code: string (hidden)
 
 export default function AddProjectPage() {
+  const { data: session } = useSession();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [newProjectId, setNewProjectId] = useState(null);
 
   const formVariants = {
     initial: { opacity: 1 },
@@ -104,10 +108,14 @@ export default function AddProjectPage() {
               setIsLoading={setIsLoading}
               isSuccess={isSuccess}
               setIsSuccess={setIsSuccess}
+              setNewProjectId={setNewProjectId}
             />
           </motion.div>
         ) : (
-          <ProjectUploadSuccess />
+          <ProjectUploadSuccess
+            userid={session?.user.email.split("@")[0]}
+            projectid={newProjectId}
+          />
         )}
       </div>
     </ChatLayout>

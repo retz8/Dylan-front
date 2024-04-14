@@ -3,6 +3,8 @@ import { TypewriterEffectSmooth } from "../ui/aceternity/typewriter-effect";
 import UserQuestion from "./UserQuestion";
 import styles from "./chat.module.css";
 import AiResponse from "./AiResponse";
+import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 
 // when isAiLoading = true, we will show the loading spinner on the last response
 
@@ -13,6 +15,8 @@ export default function ChatBox({
   projectName,
   isAiLoading,
 }) {
+  const { data: session } = useSession();
+
   const words = [
     {
       text: "How",
@@ -43,7 +47,9 @@ export default function ChatBox({
         className="
       h-full flex flex-col justify-center text-left"
       >
-        <h1 className="text-5xl font-bold">Hi Ian,</h1>
+        <h1 className="text-5xl font-bold">{`Hi ${
+          session?.user.name.split(" ")[0]
+        }`}</h1>
         <TypewriterEffectSmooth words={words} />
       </div>
     );
@@ -51,7 +57,11 @@ export default function ChatBox({
 
   return (
     <div className={styles.chatBoxContainer}>
-      <div className={styles.chats}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 1 } }}
+        className={styles.chats}
+      >
         {chatHistories?.slice(1).map(({ query, response }, index) => (
           <div key={index}>
             <UserQuestion query={query} />
@@ -62,7 +72,7 @@ export default function ChatBox({
             />
           </div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -5,10 +5,14 @@ import CopyIcon from "../ui/icons/CopyIcon";
 import CheckIcon from "../ui/icons/CheckIcon";
 import { motion } from "framer-motion";
 import { Spinner } from "@nextui-org/react";
+import MarkdownDisplay from "./MarkdownDisplay";
 // top: output + copy button
 // bottom: logo + mistakes
 
 export default function AiResponse({ isLastResponse, response, isAiLoading }) {
+  const lines = response?.split("\\n");
+  const processedMarkdownText = lines?.join("\n");
+
   const [isCopied, setIsCopied] = useState(false);
 
   const [isHovered, setIsHovered] = useState(false);
@@ -17,7 +21,7 @@ export default function AiResponse({ isLastResponse, response, isAiLoading }) {
   const handleMouseLeave = () => setIsHovered(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(response);
+    navigator.clipboard.writeText(processedMarkdownText);
     setIsCopied(true);
 
     // Reset isCopied after 3 seconds
@@ -59,7 +63,7 @@ export default function AiResponse({ isLastResponse, response, isAiLoading }) {
             <Spinner size="sm" />
           </div>
         ) : (
-          <p>{response}</p>
+          <MarkdownDisplay content={processedMarkdownText} />
         )}
       </div>
       {/* bottom */}

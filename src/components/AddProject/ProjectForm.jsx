@@ -8,16 +8,22 @@ import { addProject } from "@/services/project";
 import { motion } from "framer-motion";
 import TagInputs from "./TagInputs";
 import TagDisplay from "./TagDisplay";
+import { useSession } from "next-auth/react";
 
 export default function ProjectForm({
   isLoading,
   setIsLoading,
   isSuccess,
   setIsSuccess,
+  setNewProjectId,
 }) {
+  const { data: session } = useSession();
+
   const [projectName, setProjectName] = useState("");
   const [repoName, setRepoName] = useState("");
   const [accessCode, setAccessCode] = useState("");
+
+  const [isFailure, setIsFailure] = useState(true);
 
   // user selected tags
   const [techTags, setTechTags] = useState([]);
@@ -26,6 +32,19 @@ export default function ProjectForm({
   const [isFormValid, setIsFormValid] = useState(false);
 
   // const [isLoading, setIsLoading] = useState(false);
+
+  const errorMessageVariants = {
+    initial: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0, transition: { duration: 1 } },
+  };
+
+  useEffect(() => {
+    if (isFailure) {
+      const timer = setTimeout(() => setIsFailure(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isFailure]);
 
   const [isCodeVisible, setIsCodeVisible] = useState(false);
 
@@ -49,19 +68,31 @@ export default function ProjectForm({
     setIsLoading(true);
 
     // set up fake timer for 10s
-    setTimeout(() => {
-      setIsSuccess(true);
-      console.log("done");
-    }, 5000);
 
     // techTags
-    // const data = {
-    //   repoName: repoName,
-    //   authKey: accessCode,
-    // };
+    const data = {
+      repoName: repoName,
+      authKey: accessCode,
+      userid: session?.user.email.split("@")[0],
+      projectName: projectName,
+      techTags: techTags.map((tag) => tag.label),
+    };
 
-    // const res = await addProject(data);
-    // console.log(res);
+    // console.log(data);
+
+    const res = await addProject(data);
+
+    if (!res) {
+      setIsSuccess(false);
+      setIsLoading(false);
+      setIsFailure(true);
+      return;
+    }
+    // const modelData = await res.json();
+    console.log(res.projectid);
+    setNewProjectId(res.projectid);
+    setIsLoading(false);
+    setIsSuccess(true);
   };
   return (
     <form
@@ -130,6 +161,29 @@ export default function ProjectForm({
       >
         Ready to go!
       </Button>
+
+      {/* alert  */}
+      {isFailure && (
+        <motion.div
+          variants={errorMessageVariants}
+          initial="initial"
+          animate={isFailure ? "visible" : "exit"}
+          exit="exit"
+          style={{
+            position: "absolute",
+            top: 0,
+            background: "#990000",
+            padding: "1rem",
+            zIndex: 100,
+            borderRadius: "0.5rem",
+            transition: "all 0.5s",
+          }}
+        >
+          <span style={{ color: "white", opacity: 0.8 }}>
+            Something went wrong. Please try again.
+          </span>
+        </motion.div>
+      )}
     </form>
   );
 }

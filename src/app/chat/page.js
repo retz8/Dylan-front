@@ -1,10 +1,16 @@
+"use client";
+
 import ChatLayout from "@/layouts/ChatLayout";
 import React from "react";
 import AddProjectButton from "@/components/Chat/AddProjectButton";
 
 import ProjectList from "@/components/Chat/ProjectList";
+import { signOut, useSession } from "next-auth/react";
+import { Button, Divider } from "@nextui-org/react";
 
 export default function ChatLandingPage() {
+  const { data: session } = useSession();
+  console.log(session?.user);
   return (
     <ChatLayout>
       <div
@@ -12,14 +18,25 @@ export default function ChatLandingPage() {
       flex flex-col items-center justify-center h-full gap-2"
       >
         {/* Good afternoon test */}
-        <h1 className="text-4xl">Good afternoon, Ian</h1>
+        <h1 className="text-4xl">{`Good afternoon, ${session?.user.name}`}</h1>
 
         {/* Create new + Project List */}
-        <div className="flex flex-col w-96 px-10 py-4">
+        <div className="flex flex-col w-96 px-10 pt-6 pb-4">
           {/* button */}
           <AddProjectButton />
+          <Divider className="mt-6 mb-4" />
           {/* list */}
+          <ProjectList userid={session?.user.email.split("@")[0]} />
         </div>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            signOut({ callbackUrl: "http://localhost:3000/sign-in" });
+            window.location.href = "http://localhost:3000/sign-in";
+          }}
+        >
+          Sign Out
+        </Button>
       </div>
     </ChatLayout>
   );

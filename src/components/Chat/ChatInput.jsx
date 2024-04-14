@@ -8,6 +8,8 @@ import { Textarea } from "@nextui-org/react";
 
 import React, { useState } from "react";
 import SendIcon from "../ui/icons/SendIcon";
+import { useSession } from "next-auth/react";
+import { askQuestion } from "@/services/project";
 
 export default function ChatInput({
   query,
@@ -16,39 +18,53 @@ export default function ChatInput({
   setUserQueries,
   setChatHistories,
   setIsAiLoading,
+  projectid,
 }) {
+  const { data: session } = useSession();
+
   const sendQuery = async (query) => {
     console.log("we are sending the query");
     setIsAiLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    // await new Promise((resolve) => setTimeout(resolve, 10000));
 
-    // const data = {
-    //   projectid: projectid,
-    //   query: query,
-    // }
+    const data = {
+      userid: session?.user.email.split("@")[0],
+      projectid: projectid,
+      query: query,
+    };
 
     // const response = await askQuery(data);
     // continue with sending the query to the backend
-    console.log("we got the response");
+    // console.log("we got the response");
 
-    const fakeResponse = {
-      message: `export default function App() {
-        return (
-          <div className="flex gap-4">
-            <Spinner label="Default" color="default" labelColor="foreground"/>
-            <Spinner label="Primary" color="primary" labelColor="primary"/>
-            <Spinner label="Secondary" color="secondary" labelColor="secondary"/>
-            <Spinner label="Success" color="success" labelColor="success"/>
-            <Spinner label="Warning" color="warning" labelColor="warning"/>
-            <Spinner label="Danger" color="danger" labelColor="danger"/>
-          </div> 
-        );
-      }`,
-    };
+    // const fakeResponse = {
+    //   message: `{# 24 MHACKS HACKATHON PROJECT FRONTEND
+
+    //   ## Technology Stack
+
+    //   - Framework: Next.js (^14.2.1)
+    //   - UI Library: NextUI / Aceternity
+    //   - HTTP Client: Axios (^1.6.8)
+    //   - Styling: tailwindcss (^3.0.0)
+
+    //   ## Project Structure
+
+    //   - layouts: contains the layout components (sidebar, header)
+
+    //   ## Getting Started
+
+    //   1. install necessary packages
+
+    //   `,
+    // };
+
+    const res = await askQuestion(data);
+
+    console.log("res: ", res);
 
     setChatHistories((prev) => {
       const last = prev[prev.length - 1];
-      last.response = fakeResponse.message;
+      last.response = res?.geminiAnswer;
       return [...prev];
     });
 

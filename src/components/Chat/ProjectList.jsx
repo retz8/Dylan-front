@@ -1,70 +1,63 @@
-"use client";
-
-import React from "react";
-import {
-  Listbox,
-  ListboxItem,
-  Chip,
-  ScrollShadow,
-  Avatar,
-} from "@nextui-org/react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Listbox, ListboxItem, Spinner } from "@nextui-org/react";
 import { ListboxWrapper } from "./ListboxWrapper";
-import { users } from "./data";
+import { loadProjects } from "@/services/project";
+import ProjectCard from "../Sidebar/ProjectCard";
+import Link from "next/link";
 
-export default function App() {
-  const [values, setValues] = React.useState(new Set(["1"]));
+export default function ProjectList({ userid }) {
+  const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+  const [projects, setProjects] = useState([]); // [ { projectid, projectName }
 
-  const arrayValues = Array.from(values);
+  const selectedValue = useMemo(
+    () => Array.from(selectedKeys).join(", "),
+    [selectedKeys]
+  );
 
-  const topContent = React.useMemo(() => {
-    if (!arrayValues.length) {
-      return null;
-    }
+  useEffect(() => {
+    const fetchProjects = async () => {
+      if (userid === null) return;
+      const response = await loadProjects(userid);
+      setProjects(response?.projectList);
+    };
+    fetchProjects();
+  }, [userid]);
 
+  if (!projects) {
     return (
-      <ScrollShadow
-        hideScrollBar
-        className="w-full flex py-0.5 px-2 gap-1"
-        orientation="horizontal"
-      >
-        {arrayValues.map((value) => (
-          <Chip key={value}>
-            {users.find((user) => `${user.id}` === `${value}`).name}
-          </Chip>
-        ))}
-      </ScrollShadow>
+      <div className="w-full h-full flex justify-center items-center py-10">
+        <Spinner size="lg" />
+      </div>
     );
-  }, [arrayValues.length]);
+  }
+
+  if (projects.length === 0) {
+    return null;
+  }
 
   return (
-    <ListboxWrapper>
+    <div className="flex flex-col">
+      {/* <ListboxWrapper className="bg-yellow-300"> */}
       <Listbox
-        topContent={topContent}
-        classNames={{
-          base: "w-full",
-          list: "max-h-[300px] overflow-scroll",
-        }}
-        defaultSelectedKeys={["1"]}
-        items={users}
-        label="Assigned to"
-        selectionMode="multiple"
-        onSelectionChange={setValues}
+        aria-label="Single selection example"
         variant="flat"
+        disallowEmptySelection
+        selectionMode="none"
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+        className=""
       >
-        {(item) => (
-          <ListboxItem key={item.id} textValue={item.name}>
-            <div className="flex gap-2 items-center">
-              <Avatar
-                alt={item.name}
-                className="flex-shrink-0"
-                size="sm"
-                src={item.avatar}
+        {projects?.map((project) => (
+          <ListboxItem key={project.projectid} className="w-full">
+            <Link href={`/chat/${userid}/${project.projectid}`}>
+              <ProjectCard
+                projectName={project.projectName}
+                isCurrent={false}
               />
-              <span className="text-small">{item.name}</span>
-            </div>
+            </Link>
           </ListboxItem>
-        )}
+        ))}
       </Listbox>
-    </ListboxWrapper>
+    </div>
   );
 }

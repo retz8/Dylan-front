@@ -7,11 +7,13 @@ import React, { useEffect, useRef, useState } from "react";
 // sub-ui components
 import ChatBox from "@/components/Chat/ChatBox";
 import ChatInput from "@/components/Chat/ChatInput";
+import { useSession } from "next-auth/react";
+import { loadChatHistory } from "@/services/project";
 
 export default function ChatPage({ params }) {
-  const { projectid } = params;
+  const { userid, projectid } = params;
 
-  const projectName = "p1-letterman"; // fake project name
+  const [currentProject, setCurrentProject] = useState(null);
 
   const [query, setQuery] = useState("");
   const [isChatting, setIsChatting] = useState(false);
@@ -25,8 +27,37 @@ export default function ChatPage({ params }) {
 
   const [userQueries, setUserQueries] = useState([]);
 
+  useEffect(() => {
+    // fetch chat histories
+    const fetchChatHistories = async () => {
+      const res = await loadChatHistory(userid, projectid);
+      if (!res) return;
+      console.log(res?.user_chat_history);
+      // model: "", user: ""
+
+      // conver to chatHistories (query (user): "", response (model): "")
+      const loadedChatHistories = res?.user_chat_history.map((chat) => ({
+        query: chat.user,
+        response: chat.model,
+      }));
+
+      if (loadedChatHistories.length > 0) setIsChatting(true);
+
+      setChatHistories(loadedChatHistories);
+
+      // set current project
+    };
+    fetchChatHistories();
+  }, [userid, projectid, params]);
+
   return (
-    <UserChatLayout projectid={projectid} projectName={projectName}>
+    <UserChatLayout
+      projectid={projectid}
+      projectName={currentProject?.projectName}
+      userid={userid}
+      currentProject={currentProject}
+      setCurrentProject={setCurrentProject}
+    >
       <div
         className="w-full h-full max-w-screen-md mx-auto
       flex flex-col"
@@ -37,7 +68,7 @@ export default function ChatPage({ params }) {
             userQueries={userQueries}
             chatHistories={chatHistories}
             isChatting={isChatting}
-            projectName={projectName}
+            projectName={currentProject?.projectName}
             isAiLoading={isAiLoading}
           />
         </div>
@@ -51,6 +82,7 @@ export default function ChatPage({ params }) {
             setChatHistories={setChatHistories}
             setIsAiLoading={setIsAiLoading}
             setIsChatting={setIsChatting}
+            projectid={projectid}
           />
         </div>
         {/* Alert message about llm */}

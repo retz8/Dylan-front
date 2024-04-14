@@ -23,7 +23,7 @@ export default function Home() {
           transition={{ duration: 1.5 }} // Set transition duration to 0.5 seconds
         >
           <Button size="lg" color="primary" variant="flat">
-            <Link className="text-xl" href="/chat">
+            <Link className="text-xl" href="/sign-in">
               Get Started
             </Link>
           </Button>

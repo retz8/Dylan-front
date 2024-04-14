@@ -8,3 +8,17 @@ body {
   height: 100vh;
   overflow-x: hidden;
 }
+
+.google-colors {
+  background-image: linear-gradient(
+    to right,
+    #4285f4,
+    #db4437,
+    #f4b400,
+    #4285f4,
+    #0f9d58,
+    #db4437
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

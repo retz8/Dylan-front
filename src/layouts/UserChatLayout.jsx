@@ -1,11 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import { useSession } from "next-auth/react";
+import { loadProjects } from "@/services/project";
 
-export default function UserChatLayout({ children, projectName, projectid }) {
+export default function UserChatLayout({
+  children,
+  projectName,
+  projectid,
+  userid,
+  currentProject,
+  setCurrentProject,
+}) {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const response = await loadProjects(userid);
+      setProjects(response.projectList);
+      console.log(response.projectList);
+
+      // set current project
+      const cur = response.projectList.find(
+        (project) => project.projectid === projectid
+      );
+      setCurrentProject(cur);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <div className="w-full h-full flex">
       <motion.nav
@@ -14,7 +41,11 @@ export default function UserChatLayout({ children, projectName, projectid }) {
         transition={{ duration: 0.7 }} // Set transition duration to 0.5 seconds
         className=""
       >
-        <Sidebar projectName={projectName} projectid={projectid} />
+        <Sidebar
+          userid={userid}
+          projects={projects}
+          curProject={currentProject}
+        />
       </motion.nav>
 
       <motion.div
