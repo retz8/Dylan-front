@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { addProject } from "@/services/project";
 import { motion } from "framer-motion";
 import TagInputs from "./TagInputs";
+import TagDisplay from "./TagDisplay";
 
 export default function ProjectForm({
   isLoading,
@@ -17,7 +18,9 @@ export default function ProjectForm({
   const [projectName, setProjectName] = useState("");
   const [repoName, setRepoName] = useState("");
   const [accessCode, setAccessCode] = useState("");
-  const [tags, setTags] = useState([]);
+
+  // user selected tags
+  const [techTags, setTechTags] = useState([]);
 
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -26,6 +29,12 @@ export default function ProjectForm({
   const [isCodeVisible, setIsCodeVisible] = useState(false);
 
   const toggleVisibility = () => setIsCodeVisible(!isCodeVisible);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
 
   // form validation
   useEffect(() => {
@@ -44,9 +53,10 @@ export default function ProjectForm({
       console.log("done");
     }, 5000);
 
+    // techTags
     // const data = {
     //   repoName: repoName,
-    //   AuthKey: accessCode,
+    //   authKey: accessCode,
     // };
 
     // const res = await addProject(data);
@@ -95,7 +105,9 @@ export default function ProjectForm({
         type={isCodeVisible ? "text" : "password"}
         className="w-full"
       />
-      <TagInputs />
+      <TagInputs techTags={techTags} setTechTags={setTechTags} />
+
+      <TagDisplay techTags={techTags} />
 
       <Button
         color="primary"
@@ -104,6 +116,7 @@ export default function ProjectForm({
         className="mt-2"
         isDisabled={!isFormValid}
         type="submit"
+        handleKeyDown={handleKeyDown}
       >
         Ready to go!
       </Button>
