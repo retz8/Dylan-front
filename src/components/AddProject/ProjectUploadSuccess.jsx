@@ -2,8 +2,13 @@ import { Button } from "@nextui-org/react";
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import ProjectCard from "../Sidebar/ProjectCard";
 
-export default function ProjectUploadSuccess({ userid, projectid }) {
+export default function ProjectUploadSuccess({
+  userid,
+  projectid,
+  projectName,
+}) {
   const formVariants = {
     initial: { opacity: 0 },
     loading: { opacity: 1, transition: { duration: 0.5 } },
@@ -19,7 +24,7 @@ export default function ProjectUploadSuccess({ userid, projectid }) {
       {/* <p>Chat with your project partner Dylan!</p> */}
 
       <Link href={`/chat/${userid}/${projectid}`}>
-        <Button>Go</Button>
+        <ProjectCard projectName={projectName} />
       </Link>
     </motion.div>
   );

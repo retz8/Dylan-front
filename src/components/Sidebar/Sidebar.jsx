@@ -34,12 +34,13 @@ export default function Sidebar({ projects, userid, curProject }) {
       >
         {projects?.map(({ projectid, projectName }) => (
           <li key={projectid}>
-            <Link href={`/chat/${userid}/${projectid}`}>
-              <ProjectCard
-                projectName={projectName}
-                isCurrent={curProject?.projectid === projectid}
-              />
-            </Link>
+            <ProjectCard
+              forSideBar={true}
+              userid={userid}
+              projectid={projectid}
+              projectName={projectName}
+              isCurrent={curProject?.projectid === projectid}
+            />
           </li>
         ))}
       </motion.ul>

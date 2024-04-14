@@ -60,7 +60,7 @@ export default function ChatPage({ params }) {
       setCurrentProject={setCurrentProject}
     >
       <div
-        className="w-full h-full max-w-screen-md mx-auto
+        className="w-full h-full max-w-screen-lg mx-auto
       flex flex-col"
       >
         {/* Chat */}
@@ -76,7 +76,7 @@ export default function ChatPage({ params }) {
         </div>
 
         {/* User input */}
-        <div className="flex">
+        <div className="flex max-w-screen-md mx-auto w-full">
           <ChatInput
             query={query}
             setQuery={setQuery}

@@ -16,14 +16,15 @@ export default function ProjectForm({
   isSuccess,
   setIsSuccess,
   setNewProjectId,
+  projectName,
+  setProjectName,
 }) {
   const { data: session } = useSession();
 
-  const [projectName, setProjectName] = useState("");
   const [repoName, setRepoName] = useState("");
   const [accessCode, setAccessCode] = useState("");
 
-  const [isFailure, setIsFailure] = useState(true);
+  const [isFailure, setIsFailure] = useState(false);
 
   // user selected tags
   const [techTags, setTechTags] = useState([]);
@@ -82,7 +83,7 @@ export default function ProjectForm({
 
     const res = await addProject(data);
 
-    if (!res) {
+    if (res === null || res === undefined) {
       setIsSuccess(false);
       setIsLoading(false);
       setIsFailure(true);

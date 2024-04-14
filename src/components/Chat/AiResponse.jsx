@@ -70,7 +70,7 @@ export default function AiResponse({ isLastResponse, response, isAiLoading }) {
       <div className={styles.aiBottom}>
         <div className="relative w-8 h-8 flex">
           <Image
-            src="/sample.jpeg"
+            src="/logo.png"
             alt="User Icon"
             fill
             className="rounded-full"

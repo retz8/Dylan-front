@@ -9,7 +9,7 @@ export default function SignInPage() {
   return (
     <motion.main
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { duration: 1 } }}
+      animate={{ opacity: 1, transition: { duration: 2 } }}
       exit={{ opacity: 0 }}
       className="h-full flex flex-col justify-center items-center gap-6"
     >

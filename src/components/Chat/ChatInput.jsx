@@ -59,11 +59,18 @@ export default function ChatInput({
     // };
 
     const res = await askQuestion(data);
-
-    console.log("res: ", res);
+    if (!res) {
+      console.error("error in sending query");
+      setIsAiLoading(false);
+    }
 
     setChatHistories((prev) => {
       const last = prev[prev.length - 1];
+
+      if (!res) {
+        last.response = "Sorry, I'm unable to answer that question.";
+        return [...prev];
+      }
       last.response = res?.geminiAnswer;
       return [...prev];
     });

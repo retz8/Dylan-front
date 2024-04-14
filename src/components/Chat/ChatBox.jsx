@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { TypewriterEffectSmooth } from "../ui/aceternity/typewriter-effect";
 import UserQuestion from "./UserQuestion";
 import styles from "./chat.module.css";
@@ -18,6 +18,8 @@ export default function ChatBox({
   isLoadingChatHistories,
 }) {
   const { data: session } = useSession();
+  const chatBoxContainerRef = useRef(null);
+  const lastChatRef = useRef(null);
 
   const words = [
     {
@@ -43,6 +45,13 @@ export default function ChatBox({
     },
   ];
 
+  useEffect(() => {
+    if (chatBoxContainerRef.current) {
+      chatBoxContainerRef.current.scrollTop =
+        chatBoxContainerRef.current.scrollHeight;
+    }
+  }, [chatHistories]);
+
   if (isLoadingChatHistories) {
     return null;
   }
@@ -62,21 +71,24 @@ export default function ChatBox({
   }
 
   return (
-    <div className={styles.chatBoxContainer}>
+    <div className={styles.chatBoxContainer} ref={chatBoxContainerRef}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { duration: 1 } }}
         className={styles.chats}
       >
-        {chatHistories?.slice(1).map(({ query, response }, index) => (
-          <div key={index}>
-            <UserQuestion query={query} />
+        {chatHistories?.map(({ query, response }, index) => (
+          <div
+            key={index}
+            ref={index === chatHistories.length - 1 ? lastChatRef : null}
+          >
+            <UserQuestion icon={session?.user.image} query={query} />
             <AiResponse
-              isAiLoading={isAiLoading && index === chatHistories.length - 2}
-              isLastResponse={index === chatHistories.length - 2}
+              isAiLoading={isAiLoading && index === chatHistories.length - 1}
+              isLastResponse={index === chatHistories.length - 1}
               response={response}
             />
-            {chatHistories.length > 1 && index < chatHistories.length - 2 && (
+            {chatHistories.length > 1 && index < chatHistories.length - 1 && (
               <Divider style={{ marginTop: "24px" }} />
             )}
           </div>

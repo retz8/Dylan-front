@@ -18,12 +18,15 @@ export default function ProjectList({ userid }) {
     const fetchProjects = async () => {
       if (userid === null) return;
       const response = await loadProjects(userid);
+      if (response === undefined) {
+        return;
+      }
       setProjects(response?.projectList);
     };
     fetchProjects();
   }, [userid]);
 
-  if (!projects) {
+  if (projects === null || projects === undefined) {
     return (
       <div className="w-full h-full flex justify-center items-center py-10">
         <Spinner size="lg" />
@@ -31,7 +34,7 @@ export default function ProjectList({ userid }) {
     );
   }
 
-  if (projects.length === 0) {
+  if (projects?.length === 0) {
     return null;
   }
 

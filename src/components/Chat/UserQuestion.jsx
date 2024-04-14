@@ -8,15 +8,15 @@ import styles from "./chat.module.css";
 export default function UserQuestion({ icon, query }) {
   return (
     <div className={styles.user}>
-      <div className="relative w-8 h-8 flex">
+      <div className="relative flex w-8 h-7 rounded-full">
         <Image
-          src="/sungmo.png"
+          src={icon ? icon : "/sungmo.png"}
           alt="User Icon"
           fill
-          className="rounded-full"
+          className="rounded-full object-contain"
         />
       </div>
-      <p className="ml-0">{query}</p>
+      <p className="">{query}</p>
     </div>
   );
 }

@@ -48,3 +48,21 @@ export async function loadChatHistory(userid, projectid) {
     console.error(error);
   }
 }
+
+export async function deleteProject(data) {
+  const url = `${backendUrl}/project/deleteProject`;
+
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}

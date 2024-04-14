@@ -7,8 +7,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import ProjectLoading from "@/components/AddProject/ProjectLoading";
 import ProjectUploadSuccess from "@/components/AddProject/ProjectUploadSuccess";
-import { Button, Spinner } from "@nextui-org/react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 // form
@@ -19,6 +17,7 @@ import { useSession } from "next-auth/react";
 export default function AddProjectPage() {
   const { data: session } = useSession();
 
+  const [projectName, setProjectName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [newProjectId, setNewProjectId] = useState(null);
@@ -38,12 +37,6 @@ export default function AddProjectPage() {
     success: { opacity: 1, transition: { duration: 0.5 } },
   };
 
-  const navigateToChat = () => {
-    return () => {
-      window.location.href = "/chat/1";
-    };
-  };
-
   return (
     <ChatLayout>
       <div
@@ -60,7 +53,7 @@ export default function AddProjectPage() {
             animate={isLoading ? "loading" : "initial"}
             className="text-2xl"
           >
-            <p className="flex items-center gap-3">Loading</p>
+            <p className="flex items-center gap-3">{`Learning ${projectName}...`}</p>
           </motion.div>
         ) : isSuccess ? (
           <motion.div
@@ -70,7 +63,7 @@ export default function AddProjectPage() {
             className="text-2xl"
           >
             <p className="flex items-center gap-3">
-              Project added successfully!{" "}
+              Project added successfully!
             </p>
           </motion.div>
         ) : (
@@ -94,7 +87,7 @@ export default function AddProjectPage() {
             animate={"loading"}
             className="flex flex-col justify-center items-center"
           >
-            <ProjectLoading />{" "}
+            <ProjectLoading />
           </motion.div>
         ) : !isSuccess ? (
           <motion.div
@@ -109,12 +102,15 @@ export default function AddProjectPage() {
               isSuccess={isSuccess}
               setIsSuccess={setIsSuccess}
               setNewProjectId={setNewProjectId}
+              projectName={projectName}
+              setProjectName={setProjectName}
             />
           </motion.div>
         ) : (
           <ProjectUploadSuccess
             userid={session?.user.email.split("@")[0]}
             projectid={newProjectId}
+            projectName={projectName}
           />
         )}
       </div>

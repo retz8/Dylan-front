@@ -1,8 +1,59 @@
-import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import React from "react";
-import GitHubIcon from "../ui/icons/GitHubIcon";
+"use client";
 
-export default function ProjectCard({ projectName, isCurrent }) {
+import {
+  Button,
+  Card,
+  CardBody,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@nextui-org/react";
+import React, { useState } from "react";
+import GitHubIcon from "../ui/icons/GitHubIcon";
+import TrashIcon from "../ui/icons/TrashIcon";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { deleteProject } from "@/services/project";
+
+export default function ProjectCard({
+  forSideBar = false,
+  userid,
+  projectid,
+  projectName,
+  isCurrent,
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleDelete = async () => {
+    if (!isHovered) return;
+
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete the project ${projectName}?`
+    );
+
+    const data = {
+      userid: userid,
+      projectid: projectid,
+    };
+    const res = await deleteProject(data);
+
+    if (res) {
+      // Redirect to the chat page
+      window.location.href = `/chat/`;
+    } else {
+      // Handle error
+      console.log("Failed to delete project");
+    }
+  };
+
   return (
     <Card
       className={`py-4`}
@@ -28,10 +79,32 @@ export default function ProjectCard({ projectName, isCurrent }) {
       <CardBody
         className={`overflow-visible py-0 px-4 flex flex-row items-center justify-between gap-4`}
       >
-        <h4 className="font-bold text-medium">{projectName}</h4>
-        <div>
-          <GitHubIcon />
+        {forSideBar ? (
+          <Link href={`/chat/${userid}/${projectid}`}>
+            <h4 className="font-bold text-medium basis-[2/3]">{projectName}</h4>
+          </Link>
+        ) : (
+          <h4 className="font-bold text-medium">{projectName}</h4>
+        )}
+        {/* <PopoverContent> */}
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleDelete}
+          className="h-full z-10 pl-2"
+        >
+          <motion.div
+            key={isHovered ? "trashIcon" : "githubIcon"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {isHovered ? <TrashIcon /> : <GitHubIcon />}
+          </motion.div>
         </div>
+
+        {/* </PopoverContent> */}
       </CardBody>
     </Card>
   );
