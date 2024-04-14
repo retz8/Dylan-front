@@ -7,10 +7,6 @@
 - HTTP Client: Axios (^1.6.8)
 - Styling: tailwindcss (^3.0.0)
 
-## Project Structure
-
-- layouts: contains the layout components (sidebar, header)
-
 ## Getting Started
 
 1. install necessary packages

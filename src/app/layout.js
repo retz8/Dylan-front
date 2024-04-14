@@ -7,7 +7,7 @@ import { authOptions } from "@/config/auth";
 import AuthContext from "@/contexts/AuthContext";
 
 export const metadata = {
-  title: "Dylan.ai",
+  title: "Dylan",
   description: "Dylan, personalized AI assistant for your coding project",
 };
 

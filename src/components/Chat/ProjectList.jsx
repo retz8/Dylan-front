@@ -4,6 +4,7 @@ import { ListboxWrapper } from "./ListboxWrapper";
 import { loadProjects } from "@/services/project";
 import ProjectCard from "../Sidebar/ProjectCard";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function ProjectList({ userid }) {
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -39,7 +40,12 @@ export default function ProjectList({ userid }) {
   }
 
   return (
-    <div className="flex flex-col">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 2 } }}
+      exit={{ opacity: 0 }}
+      className="flex flex-col"
+    >
       {/* <ListboxWrapper className="bg-yellow-300"> */}
       <Listbox
         aria-label="Single selection example"
@@ -61,6 +67,6 @@ export default function ProjectList({ userid }) {
           </ListboxItem>
         ))}
       </Listbox>
-    </div>
+    </motion.div>
   );
 }

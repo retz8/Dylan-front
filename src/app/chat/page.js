@@ -7,6 +7,7 @@ import AddProjectButton from "@/components/Chat/AddProjectButton";
 import ProjectList from "@/components/Chat/ProjectList";
 import { signOut, useSession } from "next-auth/react";
 import { Button, Divider } from "@nextui-org/react";
+import { motion } from "framer-motion";
 
 export default function ChatLandingPage() {
   const { data: session } = useSession();
@@ -21,13 +22,18 @@ export default function ChatLandingPage() {
         <h1 className="text-4xl">{`Good afternoon, ${session?.user.name}`}</h1>
 
         {/* Create new + Project List */}
-        <div className="flex flex-col w-96 px-10 pt-6 pb-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { duration: 2 } }}
+          exit={{ opacity: 0 }}
+          className="flex flex-col w-96 px-10 pt-6 pb-4"
+        >
           {/* button */}
           <AddProjectButton />
           <Divider className="mt-6 mb-4" />
           {/* list */}
           <ProjectList userid={session?.user.email.split("@")[0]} />
-        </div>
+        </motion.div>
         <Button
           variant="ghost"
           onClick={() => {

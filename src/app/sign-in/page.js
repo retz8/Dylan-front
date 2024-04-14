@@ -19,7 +19,7 @@ export default function SignInPage() {
       >
         {/* Left: Sign in with google text */}
         <div className="flex flex-col items-start">
-          <h1>This is Dylan</h1>
+          <h1>This is Dylan.</h1>
           <h1 className="text-2xl">
             Sign in with
             <span className="google-colors"> Google</span>
@@ -41,9 +41,9 @@ export default function SignInPage() {
         className="flex flex-col items-center gap-4 w-96 p-4"
         variant="solid"
       >
-        <p>We provide a personalized chatbot for your coding projects</p>
-        <p>We provide a personalized chatbot for your coding projects</p>
-        <p>We provide a personalized chatbot for your coding projects</p>
+        <p>- directly refers to your code, adding layers of personalization</p>
+        <p>- views a project in the developer’s perspective</p>
+        <p>- comprehends the rationale behind the code</p>
       </Card>
     </motion.main>
   );
