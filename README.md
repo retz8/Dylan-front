@@ -39,8 +39,8 @@ $ cd Dylna-front
 $ npm install
 ```
 
-[!IMPORTANT]
-before running frontend, you need to install and run backend first.
+> [!IMPORTANT]
+> before running frontend, you need to install and run backend first.
 
 ### Development
 ```bash
