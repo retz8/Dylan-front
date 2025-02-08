@@ -20,6 +20,7 @@ While I was using ChatGPT, Claude, Gemini... to support my coding project, I rea
 ## UI & Demo Video
 ![제목 없는 디자인 (5)](https://github.com/user-attachments/assets/34335c61-e0d9-46d7-b9f6-bcd12aee533b)
 
+Video submitted at Hackathon, starting at **01:10**
 https://github.com/user-attachments/assets/6d8ea9c4-3e1a-4546-b985-40f5dbed827a
 
 
