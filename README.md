@@ -17,6 +17,12 @@ While I was using ChatGPT, Claude, Gemini... to support my coding project, I rea
 - Utilized Context API to manage session and authentication status
 - Connected frontend with Flask REST API to generate AI response and Firebase(Firestore) to save chat histories
 
+## UI & Demo Video
+![제목 없는 디자인 (5)](https://github.com/user-attachments/assets/34335c61-e0d9-46d7-b9f6-bcd12aee533b)
+
+https://github.com/user-attachments/assets/6d8ea9c4-3e1a-4546-b985-40f5dbed827a
+
+
 ## Stacks
 ### Framework
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Next JS 14](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase) ![Axios](https://img.shields.io/badge/Axios-orange?style=for-the-badge&color=orange) 
