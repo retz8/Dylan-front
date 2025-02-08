@@ -34,10 +34,13 @@ https://github.com/user-attachments/assets/6d8ea9c4-3e1a-4546-b985-40f5dbed827a
 ## Getting Started
 ### Installation
 ```bash
-$ git clone https://github.com/retz8/princeton-slfi
-$ cd princeton-slfi
+$ git clone https://github.com/retz8/Dylan-front.git
+$ cd Dylna-front
 $ npm install
 ```
+
+[!IMPORTANT]
+before running frontend, you need to install and run backend first.
 
 ### Development
 ```bash
